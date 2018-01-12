@@ -9,6 +9,9 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/blog">Blog <span class="sr-only"></span></a>
+            </li>
             </li> <a class="nav-link" href="/about">About Us </a>
             </li>
           </li> <a class="nav-link" href="/contactus">Contact Us </a>
