@@ -16,17 +16,21 @@
             </li>
           </li> <a class="nav-link" href="/contactus">Contact Us </a>
             </li>
-            <li class="nav-item dropdown ">
+            @if (Auth::check())
+            <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    My Account
+                    Hello {{Auth::user()->name}}
                   </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                    <a class="dropdown-item" href="/posts">Post</a>
+
+                    <a class="dropdown-item" href="auth/logout">Logout</a>
                 </div>
             </li>
+
+            @else
+            <a href="{{route('login')}}" class="btn btn-default">Login</a>
+            @endif
 
         </ul>
 
