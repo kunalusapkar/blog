@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\Category;
 use Session;
 
 class PostController extends Controller
@@ -34,7 +35,8 @@ class PostController extends Controller
      */
     public function create()
     {
-      return view('posts.create');
+      $categories = Category::all();
+      return view('posts.create')->withCategories($categories);
     }
 
     /**
@@ -47,14 +49,16 @@ class PostController extends Controller
     {
       //Validate the database
       $this->validate($request,array(
-        'title'=>'required|max:255',
-        'slug'=>'required|alpha_dash|min:5|max:255|unique:posts,slug',
-        'body'=>'required'
+        'title'       =>  'required|max:255',
+        'slug'        =>  'required|alpha_dash|min:5|max:255|unique:posts,slug',
+        'category_id' => 'required|integer',
+        'body'        =>  'required'
               ));
       // Store the database
       $post = new Post;
       $post->title = $request->title;
       $post->slug = $request->slug;
+      $post->category_id = $request->category_id;
       $post->body = $request->body;
       $post->save();
       Session::flash('success','Post successfully saved!');
@@ -85,7 +89,12 @@ class PostController extends Controller
     {
         //find the post in the database and save in the variable
         $post = Post::find($id);
-        return view('posts.edit')->withPost($post);
+        $categories = Category::all();
+        $cats = array();
+        foreach ($categories as $category) {
+          $cats[$category->id] = $category->name;
+        }
+        return view('posts.edit')->withPost($post)->withCategories($cats);
         // return the view and pass in the var we previously created
     }
 
@@ -119,6 +128,7 @@ class PostController extends Controller
         $post = Post::find($id);
         $post->title = $request->input('title');
         $post->slug = $request->input('slug');
+        $post->category_id = $request->category_id;
         $post->body = $request->input('body');
         $post->save();
         // Set flash data with success message

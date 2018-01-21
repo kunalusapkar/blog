@@ -26,6 +26,9 @@ Route::group(['middleware'=>['web']],function(){
   Route::get('auth/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
   Route::post('auth/register', 'Auth\RegisterController@register');
 
+  // categories
+  Route::resource('categories', 'CategoryController', ['except'=>['create']]);
+
 //Authentication  route
   // Route::get('auth/login' , 'Auth\LoginController@showLoginForm');
   // Route::get('auth/login' , 'Auth\LoginController@login');
@@ -40,5 +43,8 @@ Route::group(['middleware'=>['web']],function(){
   Route::get('contactus', 'PagesController@getContact');
   Route::get('/', 'PagesController@getIndex');
   Route::resource('posts', 'PostController');
+
+
+
 
 });

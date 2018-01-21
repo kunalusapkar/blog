@@ -14,7 +14,7 @@
          {{Form::checkbox('remember')}}{{Form::label('remember','Remember me')}}
 
          {{Form::submit('Login',['class'=>'btn btn-success'])}}
-
+         <p><a href="{{url('password/reset')}}">Forgot My Password</a></p>
        {!!Form::close()!!}
     </div>
   </div>
