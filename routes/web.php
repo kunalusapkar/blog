@@ -28,7 +28,7 @@ Route::group(['middleware'=>['web']],function(){
 
   // categories
   Route::resource('categories', 'CategoryController', ['except'=>['create']]);
-
+  Route::resource('tags', 'TagController', ['except'=>['create']]);
 //Authentication  route
   // Route::get('auth/login' , 'Auth\LoginController@showLoginForm');
   // Route::get('auth/login' , 'Auth\LoginController@login');

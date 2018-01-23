@@ -23,8 +23,8 @@
                   </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/posts">Post</a>
-                    <a class="dropdown-item" href="categories/index">Categories</a>
-
+                    <a class="dropdown-item" href="categories">Categories</a>
+                    <a class="dropdown-item" href="tags">Tags</a>
                     <a class="dropdown-item" href="auth/logout">Logout</a>
                 </div>
             </li>
