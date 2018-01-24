@@ -50,6 +50,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
       //Validate the database
+
       $this->validate($request,array(
         'title'       =>  'required|max:255',
         'slug'        =>  'required|alpha_dash|min:5|max:255|unique:posts,slug',
@@ -63,6 +64,7 @@ class PostController extends Controller
       $post->category_id = $request->category_id;
       $post->body = $request->body;
       $post->save();
+      $post->tags()->sync($request->tags, false);
       Session::flash('success','Post successfully saved!');
       return redirect()->route('posts.show', $post->id);
       // redirect to other page
@@ -92,11 +94,16 @@ class PostController extends Controller
         //find the post in the database and save in the variable
         $post = Post::find($id);
         $categories = Category::all();
+        $tags = Tag::all();
+        $tagsarray = array();
         $cats = array();
         foreach ($categories as $category) {
           $cats[$category->id] = $category->name;
         }
-        return view('posts.edit')->withPost($post)->withCategories($cats);
+        foreach ($tags as $tag) {
+            $tagsarray[$tag->id] = $tag->name;
+        }
+        return view('posts.edit')->withPost($post)->withCategories($cats)->withTags($tagsarray);
         // return the view and pass in the var we previously created
     }
 
@@ -133,6 +140,8 @@ class PostController extends Controller
         $post->category_id = $request->category_id;
         $post->body = $request->input('body');
         $post->save();
+
+        $post->tags()->sync($request->tags);
         // Set flash data with success message
         Session::flash('success','Post successfully updated!');
         //redirect with flash data to post.show
