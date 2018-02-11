@@ -29,6 +29,8 @@ Route::group(['middleware'=>['web']],function(){
   // categories
   Route::resource('categories', 'CategoryController', ['except'=>['create']]);
   Route::resource('tags', 'TagController', ['except'=>['create']]);
+  // Comments
+  Route::post('comments/{post_id}',['uses' => 'CommentsController@store','as'=>'comments.store']);
 //Authentication  route
   // Route::get('auth/login' , 'Auth\LoginController@showLoginForm');
   // Route::get('auth/login' , 'Auth\LoginController@login');
@@ -41,6 +43,7 @@ Route::group(['middleware'=>['web']],function(){
   Route::get('blog',['uses'=>'BlogController@getIndex', 'as'=> 'blog.index']);
   Route::get('about', 'PagesController@getAbout');
   Route::get('contactus', 'PagesController@getContact');
+  Route::get('contactus', 'PagesController@postContact');
   Route::get('/', 'PagesController@getIndex');
   Route::resource('posts', 'PostController');
 

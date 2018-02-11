@@ -4,7 +4,7 @@
         <div class="row">
           <div class="col-md-12">
             <h1>Contact Us</h1>
-            <form>
+            <form action="{{ url('contact')}}" method="POST">
             <div class="form-group">
               <label for="email">Email</label>
               <input id="email" name="email" class="form-control">
@@ -17,10 +17,10 @@
             </div>
             <div class="form-group">
               <label for="message">Message</label>
-              <textarea id="message" class="form-control"  placeholder=""></textarea>
+              <textarea id="message" name="message" class="form-control"  placeholder=""></textarea>
 
             </div>
-            <input type="submit" value="Send Message" class="btn btn-success" >
+            <!-- <input type="submit" value="Send Message" name="submit" class="btn btn-success" > -->
           </form>
           </div>
         </div>
