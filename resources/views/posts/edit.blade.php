@@ -3,6 +3,14 @@
 @section('stylesheets')
 {!! Html::style('css/parsley.css')  !!}
 {!! Html::style('css/select2.min.css')  !!}
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+<script>
+tinymce.init({
+   selector:'textarea',
+    plugins: 'linkcode',
+    menubar: false
+ });
+</script>
 @endsection
 
 @section('content')
