@@ -7,6 +7,9 @@ use App\Post;
 use App\Tag;
 use App\Category;
 use Session;
+use Purifier;
+use Image;
+use Storage;
 
 class PostController extends Controller
 {
@@ -55,14 +58,29 @@ class PostController extends Controller
         'title'       =>  'required|max:255',
         'slug'        =>  'required|alpha_dash|min:5|max:255|unique:posts,slug',
         'category_id' => 'required|integer',
-        'body'        =>  'required'
+        'body'        =>  'required',
+        'featured_image' => 'sometimes|image'
               ));
       // Store the database
       $post = new Post;
       $post->title = $request->title;
       $post->slug = $request->slug;
       $post->category_id = $request->category_id;
-      $post->body = $request->body;
+      $post->body = Purifier::clean($request->body);
+      // save our image
+
+      if ($request->hasFile('featured_image')) {
+          $image = $request->file('featured_image');
+          $filename = time().'.'.$image->getClientOriginalExtension();
+          $location = public_path('images/'.$filename);
+          Image::make($image)->resize(800,400)->save($location);
+          $post->image = $filename;
+        }
+
+
+
+
+
       $post->save();
       $post->tags()->sync($request->tags, false);
       Session::flash('success','Post successfully saved!');
@@ -121,14 +139,15 @@ class PostController extends Controller
         if ($request->input('slug') == $post->slug) {
           $this->validate($request,array(
             'title'=>'required|max:255',
-              'body'=>'required'
+              'body'=>'required',
+              'featured_image' => 'image'
                   ));
 
         }
         else {
           $this->validate($request,array(
             'title'=>'required|max:255',
-            'slug'=>'required|alpha_dash|min:5|max:255|unique:posts,slug',
+            'slug'=>"required|alpha_dash|min:5|max:255|unique:posts,slug,$id",
             'body'=>'required'
                   ));
         }
@@ -138,7 +157,19 @@ class PostController extends Controller
         $post->title = $request->input('title');
         $post->slug = $request->input('slug');
         $post->category_id = $request->category_id;
-        $post->body = $request->input('body');
+        $post->body = Purifier::clean($request->input('body'));
+        if ($request->hasFile('featured_image')) {
+            // add the new photo
+            $image = $request->file('featured_image');
+            $filename = time().'.'.$image->getClientOriginalExtension();
+            $location = public_path('images/'.$filename);
+            Image::make($image)->resize(800,400)->save($location);
+            $oldfilename = $post->image;
+            //update the database
+            $post->image = $filename;
+            // delete the photo
+            Storage::delete($oldfilename);
+          }
         $post->save();
 
         $post->tags()->sync($request->tags);
